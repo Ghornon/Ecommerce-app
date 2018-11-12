@@ -1,0 +1,10 @@
+@import "_colors";
+@import "_fonts";
+
+.navbar {
+	width: 100%;
+	height: 100px;
+	background: $white;
+	color: $primary;
+	border-bottom: 1px solid $secondary;
+}
