@@ -14,45 +14,60 @@
 
 	<div class="navbar">
 
-		<input type="checkbox" id="nav-collapse-btn" class="nav-btn">
+		<input type="checkbox" id="nav-collapse-btn" class="navbar-btn">
 
 		<label for="nav-collapse-btn" class="navbar-hamburger"><i class="fas fa-bars"></i></label>
 
-		<nav class="navbar-collapse" id="nav-collapse">
+		<nav class="collapse" id="navbar-collapse">
 
 			<ul class="nav">
 				<li class="nav-item">
 					<h1 class="nav-header">Lorem ipsum</h1>
 				</li>
-				<li class="nav-item"><a href="#">Lorem, ipsum.</a></li>
-				<li class="nav-item"><a href="#">Voluptas, neque.</a></li>
-				<li class="nav-item"><a href="#">Reiciendis, tempore.</a></li>
-				<li class="nav-item"><a href="#">Repellendus, quia?</a></li>
-				<li class="nav-item"><a href="#">Velit, delectus!</a></li>
+				<li class="nav-item"><a href="#" class="nav-link">Lorem, ipsum.</a></li>
+				<li class="nav-item"><a href="#" class="nav-link">Voluptas, neque.</a></li>
+				<li class="nav-item"><a href="#" class="nav-link">Reiciendis, tempore.</a></li>
+				<li class="nav-item"><a href="#" class="nav-link">Repellendus, quia?</a></li>
+				<li class="nav-item"><a href="#" class="nav-link">Velit, delectus!</a></li>
+				<li class="nav-item"><a href="#" class="nav-link">Lorem, ipsum.</a></li>
+				<li class="nav-item"><a href="#" class="nav-link">Voluptas, neque.</a></li>
+				<li class="nav-item"><a href="#" class="nav-link">Reiciendis, tempore.</a></li>
+				<li class="nav-item"><a href="#" class="nav-link">Repellendus, quia?</a></li>
+				<li class="nav-item"><a href="#" class="nav-link">Velit, delectus!</a></li>
 			</ul>
 			<ul class="nav">
 				<li class="nav-item">
 					<h1 class="nav-header">Lorem ipsum</h1>
 				</li>
-				<li class="nav-item"><a href="#">Harum, consequuntur.</a></li>
-				<li class="nav-item"><a href="#">Nostrum, veniam.</a></li>
-				<li class="nav-item"><a href="#">Tenetur, excepturi!</a></li>
-				<li class="nav-item"><a href="#">Unde, eos.</a></li>
-				<li class="nav-item"><a href="#">Necessitatibus, quod.</a></li>
+				<li class="nav-item"><a href="#" class="nav-link">Harum, consequuntur.</a></li>
+				<li class="nav-item"><a href="#" class="nav-link">Nostrum, veniam.</a></li>
+				<li class="nav-item"><a href="#" class="nav-link">Tenetur, excepturi!</a></li>
+				<li class="nav-item"><a href="#" class="nav-link">Unde, eos.</a></li>
+				<li class="nav-item"><a href="#" class="nav-link">Necessitatibus, quod.</a></li>
+				<li class="nav-item"><a href="#" class="nav-link">Harum, consequuntur.</a></li>
+				<li class="nav-item"><a href="#" class="nav-link">Nostrum, veniam.</a></li>
+				<li class="nav-item"><a href="#" class="nav-link">Tenetur, excepturi!</a></li>
+				<li class="nav-item"><a href="#" class="nav-link">Unde, eos.</a></li>
+				<li class="nav-item"><a href="#" class="nav-link">Necessitatibus, quod.</a></li>
 			</ul>
 			<ul class="nav">
 				<li class="nav-item">
 					<h1 class="nav-header">Lorem ipsum</h1>
 				</li>
-				<li class="nav-item"><a href="#">Unde, amet!</a></li>
-				<li class="nav-item"><a href="#">Quae, dolore!</a></li>
-				<li class="nav-item"><a href="#">Dolorem, accusamus!</a></li>
-				<li class="nav-item"><a href="#">Ullam, consequatur!</a></li>
-				<li class="nav-item"><a href="#">Dolorum, quidem.</a></li>
+				<li class="nav-item"><a href="#" class="nav-link">Unde, amet!</a></li>
+				<li class="nav-item"><a href="#" class="nav-link">Quae, dolore!</a></li>
+				<li class="nav-item"><a href="#" class="nav-link">Dolorem, accusamus!</a></li>
+				<li class="nav-item"><a href="#" class="nav-link">Ullam, consequatur!</a></li>
+				<li class="nav-item"><a href="#" class="nav-link">Dolorum, quidem.</a></li>
+				<li class="nav-item"><a href="#" class="nav-link">Harum, consequuntur.</a></li>
+				<li class="nav-item"><a href="#" class="nav-link">Nostrum, veniam.</a></li>
+				<li class="nav-item"><a href="#" class="nav-link">Tenetur, excepturi!</a></li>
+				<li class="nav-item"><a href="#" class="nav-link">Unde, eos.</a></li>
+				<li class="nav-item"><a href="#" class="nav-link">Necessitatibus, quod.</a></li>
 			</ul>
 			<ul class="nav">
 				<li class="nav-item">
-					<h1 class="nav-header">Sign in</h1>
+					<h1 class="nav-header text-center">Sign in</h1>
 				</li>
 				<li class="nav-item">
 					<form action="/signin" method="POST" class="form">
@@ -64,7 +79,7 @@
 							<label for="password" class="form-label">Passsword</label>
 							<input type="password" id="password" name="password" placeholder="********" class="form-input">
 						</div>
-						<div class="row">
+						<div class="row no-padding">
 							<a href="/signup" class="btn btn-blue form-btn">Sign up 4 free</a>
 							<button type="submit" class="btn btn-red form-btn">Sign in</button>
 						</div>
@@ -85,39 +100,14 @@
 
 		<div class="navbar-nav">
 
-			<div class="shopping">
-
-				<div class="shopping-cart">
-					<i class="fas fa-shopping-cart"></i>
-					<div class="shopping-badge">3</div>
-				</div>
-
-				<ul class="nav nav-cart">
-					<li class="nav-item">
-						<img src="" alt="">
-						<a href="#">Lorem, ipsum.</a>
-						<span class="price">30</span>
-					</li>
-					<li class="nav-item">
-						<img src="" alt="">
-						<a href="#">Dolor, quos?</a>
-						<span class="price">30</span>
-					</li>
-					<li class="nav-item">
-						<img src="" alt="">
-						<a href="#">Consequuntur, distinctio?</a>
-						<span class="price">30</span>
-					</li>
-					<li class="nav-item">
-						<a href="/cart" class="btn btn-red">Cart</a>
-					</li>
-				</ul>
-
-			</div>
+			<a href="/cart" class="shopping-cart">
+				<i class="fas fa-shopping-cart"></i>
+				<span class="shopping-cart-badge">3</span>
+			</a>
 
 			<div class="search">
 
-				<input type="search" class="search-box">
+				<input type="search" class="search-box" placeholder="Search..." id="search-box">
 				<div class="search-bar"></div>
 
 			</div>

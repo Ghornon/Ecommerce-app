@@ -1,13 +1,18 @@
 @import "_reboot";
+
+/* Variables */
+
 @import "_colors";
 @import "_fonts";
+
+/* Main */
 
 body {
 	background: $bgColor;
 	color: $secondary;
-	font-weight: medium;
 	font-family: 'Hind', sans-serif;
-	font-size: 16px;
+	font-size: 14px;
+	font-weight: 500;
 }
 
 h1,
@@ -21,5 +26,18 @@ h6 {
 	font-family: 'Lato', sans-serif;
 	text-transform: uppercase;
 }
+
+.text-center {
+	text-align: center;
+}
+
+/* Modules */
+
+@import "_button";
+@import "_collapse";
+@import "_nav";
+@import "_form";
+
+/* Layout */
 
 @import "_navbar";
