@@ -8,7 +8,7 @@
 /* Main */
 
 body {
-	background: $bgColor;
+	background: $white;
 	color: $secondary;
 	font-family: 'Hind', sans-serif;
 	font-size: 14px;
@@ -37,7 +37,10 @@ h6 {
 @import "_collapse";
 @import "_nav";
 @import "_form";
+@import "_product";
 
 /* Layout */
 
-@import "_navbar";
+@import "_Navbar";
+@import "_Products";
+@import "_Footer";

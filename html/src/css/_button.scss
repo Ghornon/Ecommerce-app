@@ -21,4 +21,17 @@
 	&-red {
 		background: $red;
 	}
+
+	&-add {
+		width: 40px;
+		background: $white;
+		color: $secondary;
+		text-align: center;
+		line-height: 40px;
+		transition: all 250ms;
+
+		&:hover {
+			color: $primary;
+		}
+	}
 }
