@@ -41,7 +41,7 @@
 
 	&-img {
 		width: 100%;
-		background: $bgColor;
+		background: $bgItem;
 		padding: 20px;
 		box-sizing: border-box;
 	}
@@ -50,11 +50,11 @@
 		color: $secondary;
 		font-size: 18px;
 		margin-top: 40px;
-		font-family: 'Hind', sans-serif;
+		@include HindFont;
 	}
 
 	&-price {
-		font-family: 'Hind', sans-serif;
+		@include HindFont;
 		color: $primary;
 	}
 

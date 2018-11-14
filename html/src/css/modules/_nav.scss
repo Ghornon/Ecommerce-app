@@ -12,8 +12,7 @@
 		color: $secondary;
 		text-decoration: none;
 		line-height: 1.8;
-		font-family: 'Hind', sans-serif;
-		font-weight: 500;
+		@include HindFont;
 
 		&:hover {
 			color: $primary;

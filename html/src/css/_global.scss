@@ -1,0 +1,21 @@
+body {
+	background: $bgColor;
+	color: $secondary;
+	font-size: 14px;
+	@include HindFont;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	color: $primary;
+	@include LatoFont;
+	text-transform: uppercase;
+}
+
+.text-center {
+	text-align: center;
+}

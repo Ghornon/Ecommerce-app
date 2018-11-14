@@ -1,10 +1,7 @@
-@import "_colors";
-@import "_fonts";
-
 .navbar {
 	width: 100%;
 	height: 60px;
-	background: $white;
+	background: $bgColor;
 	color: $primary;
 	border-bottom: 1px solid $border;
 	display: flex;
@@ -55,8 +52,7 @@
 	&-header {
 		margin-left: 10px;
 		color: $primary;
-		font-weight: 900;
-		font-family: 'Lato', sans-serif;
+		@include LatoFont;
 		font-size: 2em;
 
 		@media only screen and (max-width: 576px) {
@@ -128,12 +124,13 @@
 		height: 26px;
 		padding: 5px;
 		margin-left: 20px;
-		font-family: 'Lato', sans-serif;
+		@include LatoFont;
 		transition: all 250ms ease-in-out;
 
 		&::placeholder {
 			opacity: 1;
 			color: $primary;
+			@include LatoFont;
 		}
 
 		&:focus,
