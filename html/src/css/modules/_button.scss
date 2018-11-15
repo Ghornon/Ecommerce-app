@@ -12,13 +12,23 @@
 	outline: 0;
 	text-decoration: none;
 	border-radius: 3px;
+	transition: all 250ms;
+	cursor: pointer;
 
 	&-blue {
 		background: $blue;
+
+		&:hover {
+			opacity: .95;
+		}
 	}
 
 	&-red {
 		background: $red;
+
+		&:hover {
+			opacity: .95;
+		}
 	}
 
 	&-add {
@@ -27,7 +37,6 @@
 		color: $secondary;
 		text-align: center;
 		line-height: 40px;
-		transition: all 250ms;
 
 		&:hover {
 			color: $primary;
