@@ -18,10 +18,13 @@
 @import "modules/_nav";
 @import "modules/_form";
 @import "modules/_product";
-@import "modules/_single";
 
 /* Layout */
 
 @import "layout/_Navbar";
 @import "layout/_Products";
+@import "layout/_Single";
+@import "layout/_Prompt";
+@import "layout/_Profile";
+@import "layout/_Order";
 @import "layout/_Footer";

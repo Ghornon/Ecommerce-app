@@ -42,4 +42,40 @@
 			color: $primary;
 		}
 	}
+
+	&-outline {
+		background: transparent;
+		border: 3px solid $green;
+		color: $green;
+		line-height: 34px;
+		border-radius: 5px;
+
+		&:hover {
+			opacity: .9;
+		}
+	}
+
+	&-step {
+		border: 1px solid $border;
+
+		&-minus {
+			border-radius: 0;
+			border-top-left-radius: 3px;
+			border-bottom-left-radius: 3px;
+			margin-left: 10px;
+			font-size: 10px;
+		}
+
+		&-plus {
+			border-radius: 0;
+			border-top-right-radius: 3px;
+			border-bottom-right-radius: 3px;
+			margin-right: 10px;
+			font-size: 10px;
+		}
+
+		&:hover {
+			border: 1px solid $blue;
+		}
+	}
 }

@@ -1,0 +1,157 @@
+.order {
+	max-width: 1200px;
+	width: calc(100% - 80px);
+	margin: 100px auto;
+
+	@media only screen and (max-width: 768px) {
+		text-align: center;
+	}
+
+	&-header {
+		border: 1px solid $border;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		border-top-left-radius: 5px;
+		border-top-right-radius: 5px;
+
+		.btn {
+			width: 200px;
+
+			@media only screen and (max-width: 576px) {
+				width: 100%;
+				height: auto;
+				padding: 5px;
+			}
+		}
+	}
+
+	&-footer {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		border-bottom-left-radius: 5px;
+		border-bottom-right-radius: 5px;
+		background: rgba($border, 0.2);
+
+		@media only screen and (max-width: 960px) {
+			flex-direction: column;
+		}
+
+		.col {
+			width: 40%;
+
+			@media only screen and (max-width: 960px) {
+				justify-content: center;
+				flex-direction: column;
+				width: 100%;
+				margin: 20px 0;
+				padding: 0;
+			}
+		}
+	}
+
+	.nav-item {
+		padding: 20px 40px;
+		border-left: 1px solid $border;
+		border-right: 1px solid $border;
+		display: flex;
+		justify-content: space-between;
+		border-bottom: 1px solid $border;
+
+		@media only screen and (max-width: 768px) {
+			flex-direction: column;
+			padding: 20px;
+		}
+	}
+
+	&-image {
+		width: 100px;
+		height: 100%;
+	}
+
+	&-name {
+		font-size: 24px;
+		margin-left: 10px;
+
+		@media only screen and (max-width: 768px) {
+			width: 100%;
+			margin: 20px 0;
+		}
+	}
+
+	&-link {
+		color: inherit;
+		text-decoration: none;
+	}
+
+	&-price {
+		font-size: 16px;
+		display: block;
+		width: 100%;
+		text-align: center;
+
+		@media only screen and (max-width: 768px) {
+			width: 100%;
+			margin: 0;
+		}
+	}
+
+	&-multiple {
+		color: $secondary;
+		text-transform: lowercase;
+	}
+
+	&-count {
+		color: $green;
+		text-transform: lowercase;
+	}
+
+	&-sm {
+		width: 40px;
+		text-align: center;
+	}
+
+	&-delete {
+		min-width: 40px;
+
+		@media only screen and (max-width: 768px) {
+			width: 120px;
+		}
+	}
+
+	&-status {
+		color: $blue;
+		width: 200px;
+		text-align: center;
+		margin: 10px;
+	}
+
+	.col {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+
+		@media only screen and (max-width: 768px) {
+			justify-content: center;
+			flex-direction: column;
+			width: 100%;
+			margin: 20px 0;
+			padding: 0;
+		}
+
+		&-inline {
+			display: flex;
+			flex-direction: row;
+			margin: 20px 0
+		}
+	}
+
+	.btn-outline {
+		margin-left: 40px;
+
+		@media only screen and (max-width: 960px) {
+			margin: 40px 0 0 0;
+		}
+	}
+}

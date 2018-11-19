@@ -16,6 +16,11 @@ h6 {
 	text-transform: uppercase;
 }
 
+hr {
+	margin: 30px 0;
+	border-top: 1px solid $border;
+}
+
 .text-center {
 	text-align: center;
 }

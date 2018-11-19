@@ -13,9 +13,20 @@
 		display: flex;
 		margin-bottom: 40px;
 
+		@media only screen and (max-width: 576px) {
+			flex-direction: column;
+		}
+
 		&-thumbnail {
 			margin: 0;
 			padding: 0;
+
+			@media only screen and (max-width: 576px) {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				flex-flow: wrap;
+			}
 
 			.thumbnail-item {
 				background: $bgItem;
@@ -40,6 +51,7 @@
 			background: $bgItem;
 			padding: 40px;
 			box-sizing: border-box;
+			height: 100%;
 
 			img {
 				width: 100%;
@@ -55,6 +67,12 @@
 		justify-content: center;
 		align-content: center;
 
+		@media only screen and (max-width: 576px) {
+			text-align: center;
+			padding: 0;
+			width: 100%;
+		}
+
 		.product-name {
 			font-size: 32px;
 			padding-bottom: 20px;
@@ -65,7 +83,10 @@
 		.product-description {
 			padding-left: 40px;
 			padding-bottom: 20px;
-			// list-style-type: circle;
+
+			@media only screen and (max-width: 576px) {
+				padding-left: 0;
+			}
 
 			.item {
 				padding-bottom: 10px;
@@ -80,6 +101,10 @@
 					width: 1.3em;
 					color: $green;
 					margin-right: 10px;
+
+					@media only screen and (max-width: 576px) {
+						// display: none;
+					}
 				}
 			}
 		}
