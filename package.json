@@ -1,0 +1,48 @@
+{
+	"name": "ecommerce",
+	"version": "0.1.0",
+	"description": "Simple ecommerce app.",
+	"main": "server.js",
+	"scripts": {
+		"babel-node": "babel-node --presets=env",
+		"start": "nodemon --exec npm run babel-node -- ./server.js",
+		"build": "babel src -d dist"
+	},
+	"keywords": [
+		"ecommerce",
+		"app",
+		"react",
+		"express",
+		"api",
+		"json",
+		"jwt"
+	],
+	"author": "Szymon Guzik",
+	"license": "MIT",
+	"devDependencies": {
+		"babel": "^6.23.0",
+		"babel-cli": "^6.26.0",
+		"babel-preset-env": "^1.7.0",
+		"eslint": "^5.9.0",
+		"eslint-config-airbnb-base": "^13.1.0",
+		"eslint-plugin-import": "^2.14.0",
+		"nodemon": "^1.18.6"
+	},
+	"dependencies": {
+		"bcryptjs": "^2.4.3",
+		"body-parser": "^1.18.3",
+		"express": "^4.16.4",
+		"express-promise-router": "^3.0.3",
+		"joi": "^14.1.0",
+		"morgan": "^1.9.1",
+		"mysql": "^2.16.0",
+		"passport": "^0.4.0",
+		"passport-jwt": "^4.0.0",
+		"passport-local": "^1.0.0"
+	},
+	"babel": {
+		"presets": [
+			"env"
+		]
+	}
+}
