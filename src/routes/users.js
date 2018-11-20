@@ -1,19 +1,17 @@
 import router from 'express-promise-router';
+import passport from '../helpers/passport';
+import { validateBody, schemas } from '../helpers/validator';
 import usersController from '../controllers/users';
 
-import { validateBody, schemas } from '../helpers/routeHelper';
-
 // Define a router
-
 const userRouter = router();
 
 // Routes
-
-// userRouter.route('/signup')
-// 	.post(usersController.signUp);
+userRouter.route('/signup')
+	.post(validateBody(schemas.signUpSchema), usersController.signUp);
 
 userRouter.route('/signin')
-	.post(validateBody(schemas.authSchema), usersController.signIn);
+	.post(validateBody(schemas.authSchema), passport.authenticate('local', { session: false }), usersController.signIn);
 
 // userRouter.route('/profile')
 // 	.post(usersController.profile);
@@ -24,6 +22,8 @@ userRouter.route('/signin')
 // userRouter.route('/payment')
 // 	.post(usersController.payment);
 
-// Export
+userRouter.route('/secret')
+	.get(passport.authenticate('jwt', { session: false }), usersController.secret);
 
+// Export
 export default userRouter;

@@ -1,0 +1,30 @@
+{
+	"env": {
+		"browser": true,
+		"es6": true,
+		"node": true
+	},
+	"extends": "airbnb-base",
+	"parserOptions": {
+		"sourceType": "module"
+	},
+	"plugins": [
+		"import"
+	],
+	"rules": {
+		"indent": [
+			"error",
+			"tab"
+		],
+		"linebreak-style": [
+			"error",
+			"windows"
+		],
+		"semi": [
+			"error",
+			"always"
+		],
+		"no-console": 1,
+		"no-tabs": 0
+	}
+}

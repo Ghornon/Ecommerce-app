@@ -1,19 +1,19 @@
 import mysql from 'mysql';
-import config from '../config';
+import { DB_CONFIG } from '../config';
 
 class Database {
-	constructor(configObject) {
-		this.pool = mysql.createPool(configObject);
+	constructor(config) {
+		this.pool = mysql.createPool(config);
 	}
 
 	getConnection() {
 		return new Promise((resolve, reject) => {
-			this.pool.getConnection((err, connection) => {
-				if (err) {
-					reject(err);
+			this.pool.getConnection((error, connection) => {
+				if (error) {
+					return reject(error);
 				}
 
-				resolve(connection);
+				return resolve(connection);
 			});
 		});
 	}
@@ -24,21 +24,22 @@ class Database {
 				if (error) {
 					return reject(error);
 				}
-				resolve(results, fields);
+
+				return resolve(results, fields);
 			});
 		});
 	}
 
 	close() {
 		return new Promise((resolve, reject) => {
-			this.pool.end((err) => {
-				reject(err);
+			this.pool.end((error) => {
+				reject(error);
 			});
 			resolve();
 		});
 	}
 }
 
-const database = new Database(config.DB_CONFIG);
+const database = new Database(DB_CONFIG);
 
 export default database;

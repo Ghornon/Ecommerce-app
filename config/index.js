@@ -8,4 +8,4 @@ const DB_CONFIG = {
 	connectionLimit: 10,
 };
 
-export default { JWT_SECRET, DB_CONFIG };
+export { JWT_SECRET, DB_CONFIG };
