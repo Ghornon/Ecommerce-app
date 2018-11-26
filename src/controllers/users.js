@@ -1,32 +1,10 @@
-import JWT from 'jsonwebtoken';
-import bcrypt from 'bcryptjs';
+import { signToken, genHash } from '../helpers/auth';
 import database from '../database';
-import { JWT_SECRET } from '../../config';
-
-// Create token
-const signToken = id => JWT.sign({
-	iss: 'Ecommerce',
-	sub: id,
-	iat: new Date().getTime(),
-	exo: new Date().setDate(new Date().getDate() + 1),
-}, JWT_SECRET);
-
-// Hash pasword
-const genHash = async (password) => {
-	// Generate a salt
-	const salt = await bcrypt.genSalt(10);
-
-	// Generate a hash
-	const hash = await bcrypt.hash(password, salt);
-
-	// Retrun hash
-	return hash;
-};
 
 // Sign in
 const signIn = async (req, res) => {
 	// Create token
-	const token = signToken(req.user_id);
+	const token = signToken(req.user.user_id);
 
 	// Send token
 	return res.status(200).json({ token });
@@ -55,11 +33,97 @@ const signUp = async (req, res) => {
 	const token = signToken(result.insertId);
 
 	// Send token
-	return res.status(200).json({ token });
+	return res.status(201).json({ token });
 };
 
-const secret = async (req, res) => {
-	res.status(200).json('Heeelloo!');
+// User profile controller
+const getProfile = async (req, res) => {
+	const {
+		email, fname, lname,
+	} = req.user;
+
+	res.status(200).json({
+		email, fname, lname,
+	});
 };
 
-export default { signIn, signUp, secret };
+const setProfile = async (req, res) => {
+	const {
+		email, password, fname, lname,
+	} = req.body;
+	const id = req.user.user_id;
+
+	// Ganerate hash password
+	const hash = await genHash(password);
+
+	// Insert data to database
+	await database.query('UPDATE users SET email = ?, password = ?, fname = ?, lname = ? WHERE user_id = ?', [email, hash, fname, lname, id]);
+
+	// Send result
+	return res.status(204).json();
+};
+
+// User address controller
+const getAddress = async (req, res) => {
+	const {
+		address, country, state, zip,
+	} = req.user;
+
+	// Send result
+	res.status(200).json({
+		address, country, state, zip,
+	});
+};
+
+const setAddress = async (req, res) => {
+	const {
+		address, country, state, zip,
+	} = req.body;
+	const id = req.user.user_id;
+
+	const rows = await database.query('SELECT * FROM address WHERE user_id = ?', [id]);
+
+	if (rows.length === 0) {
+		await database.query('INSERT INTO address (user_id, address, country, fname, zip) VALUES (?, ?, ?, ?, ?)', [id, address, country, state, zip]);
+		return res.status(201).json();
+	}
+
+	await database.query('UPDATE address SET address = ?, country = ?, fname = ?, zip = ? WHERE user_id = ?', [address, country, state, zip, id]);
+	return res.status(204).json();
+};
+
+// User address controller
+const getPayments = async (req, res) => {
+	const {
+		name, number, expiration, ccv,
+	} = req.user;
+
+	// Send result
+	res.status(200).json({
+		name, number, expiration, ccv,
+	});
+};
+
+const setPayments = async (req, res) => {
+	const {
+		name, number, expiration, ccv,
+	} = req.body;
+	const id = req.user.user_id;
+
+	const rows = await database.query('SELECT * FROM payments WHERE user_id = ?', [id]);
+
+	if (rows.length === 0) {
+		await database.query('INSERT INTO payments (user_id, name, number, expiration, ccv) VALUES (?, ?, ?, ?, ?)', [id, name, number, expiration, ccv]);
+		return res.status(201).json();
+	}
+
+	// Insert data to database
+	await database.query('UPDATE payments SET name = ?, number = ?, expiration = ?, ccv = ? WHERE user_id = ?', [name, number, expiration, ccv, id]);
+
+	// Send result
+	return res.status(204).json();
+};
+
+export default {
+	signIn, signUp, getProfile, setProfile, getAddress, setAddress, getPayments, setPayments,
+};
