@@ -3,7 +3,10 @@ import database from '../database';
 const get = async (req, res) => {
 	const id = req.user.user_id;
 
-	const products = await database.query('SELECT carts.cart_id, products.product_id, products.name, products.price, products.svg FROM carts, products WHERE user_id = ? AND carts.product_id = products.product_id', [id]);
+	const products = await database.query(
+		'SELECT carts.cart_id, products.product_id, products.name, products.price, products.svg FROM carts, products WHERE user_id = ? AND carts.product_id = products.product_id',
+		[id]
+	);
 
 	if (products.length > 0) {
 		return res.status(200).json({ products });

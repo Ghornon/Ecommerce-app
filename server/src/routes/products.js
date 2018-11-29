@@ -8,11 +8,13 @@ const productsRouter = router();
 
 // Routes
 
-productsRouter.route('/')
+productsRouter
+	.route('/')
 	.get(productsController.get)
 	.post(passport.authenticate('jwt', { session: false }), productsController.add);
 
-productsRouter.route('/:id')
+productsRouter
+	.route('/:id')
 	.get(productsController.get)
 	.put(passport.authenticate('jwt', { session: false }), productsController.update)
 	.delete(passport.authenticate('jwt', { session: false }), productsController.remove);
