@@ -1,29 +1,20 @@
 {
 	"name": "server",
 	"version": "0.2.0",
-	"description": "Simple ecommerce app.",
 	"main": "./src/server.js",
 	"scripts": {
+		"start": "concurrently \"npm run start:client\" \"npm run start:server\"",
+		"start:client": "npm run start:client --prefix ../client",
+		"start:server": "nodemon --exec npm run babel-node -- ./src/server.js",
 		"babel-node": "babel-node --presets=env",
-		"start": "nodemon --exec npm run babel-node -- ./src/server.js",
 		"build": "babel src -d dist",
 		"debug": "babel src -d dist --watch --source-maps"
 	},
-	"keywords": [
-		"ecommerce",
-		"app",
-		"react",
-		"express",
-		"api",
-		"json",
-		"jwt"
-	],
-	"author": "Szymon Guzik",
-	"license": "MIT",
 	"devDependencies": {
 		"babel": "^6.23.0",
 		"babel-cli": "^6.26.0",
 		"babel-preset-env": "^1.7.0",
+		"concurrently": "^4.1.0",
 		"eslint": "^5.9.0",
 		"eslint-config-airbnb-base": "^13.1.0",
 		"eslint-config-prettier": "^3.3.0",
