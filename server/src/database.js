@@ -32,7 +32,7 @@ class Database {
 
 	close() {
 		return new Promise((resolve, reject) => {
-			this.pool.end((error) => {
+			this.pool.end(error => {
 				reject(error);
 			});
 			resolve();

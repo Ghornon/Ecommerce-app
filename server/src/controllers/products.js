@@ -20,22 +20,24 @@ const get = async (req, res) => {
 };
 
 const add = async (req, res) => {
-	const {
-		name, price, description, svg,
-	} = req.body;
+	const { name, price, description, svg } = req.body;
 
-	await database.query('INSERT INTO products (name, price, description, svg) VALUES (?, ?, ?, ?)', [name, price, description, svg]);
+	await database.query(
+		'INSERT INTO products (name, price, description, svg) VALUES (?, ?, ?, ?)',
+		[name, price, description, svg]
+	);
 
 	return res.status(201).json();
 };
 
 const update = async (req, res) => {
 	const { id } = req.params;
-	const {
-		name, price, description, svg,
-	} = req.body;
+	const { name, price, description, svg } = req.body;
 
-	await database.query('UPDATE products SET name = ?, price = ?, description = ?, svg = ? WHERE product_id = ?', [name, price, description, svg, id]);
+	await database.query(
+		'UPDATE products SET name = ?, price = ?, description = ?, svg = ? WHERE product_id = ?',
+		[name, price, description, svg, id]
+	);
 
 	return res.status(204).json();
 };
@@ -49,5 +51,8 @@ const remove = async (req, res) => {
 };
 
 export default {
-	get, add, update, remove,
+	get,
+	add,
+	update,
+	remove
 };

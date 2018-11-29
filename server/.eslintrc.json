@@ -4,14 +4,16 @@
 		"es6": true,
 		"node": true
 	},
-	"extends": "airbnb-base",
+	"extends": ["airbnb-base", "prettier"],
 	"parserOptions": {
 		"sourceType": "module"
 	},
 	"plugins": [
-		"import"
+		"import",
+		"prettier"
 	],
 	"rules": {
+		"prettier/prettier": ["error"],
 		"indent": [
 			"error",
 			"tab"
