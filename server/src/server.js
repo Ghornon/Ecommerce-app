@@ -14,9 +14,9 @@ app.use(morgan('dev'));
 app.use(bodyParser.json());
 
 // Routes
-app.use('/users', usersRoutes);
-app.use('/cart', cartRoutes);
-app.use('/products', productsRouter);
+app.use('/api/users', usersRoutes);
+app.use('/api/cart', cartRoutes);
+app.use('/api/products', productsRouter);
 
 /* eslint no-console: 0 */
 
