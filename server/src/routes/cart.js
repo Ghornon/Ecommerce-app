@@ -23,4 +23,20 @@ cartRouter
 		cartController.remove
 	);
 
+cartRouter
+	.route('/add/:id')
+	.get(
+		passport.authenticate('jwt', { session: false }),
+		validateBody(schemas.cartSchema),
+		cartController.add
+	);
+
+cartRouter
+	.route('/remove/:id')
+	.get(
+		passport.authenticate('jwt', { session: false }),
+		validateBody(schemas.cartSchema),
+		cartController.remove
+	);
+
 export default cartRouter;
