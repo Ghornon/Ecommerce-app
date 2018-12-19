@@ -1,28 +1,104 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import authGuard from '../helpers/authGuard';
 
 export default class Cart extends Component {
 	state = {
-		products: []
+		products: [],
+		productsView: []
 	};
+
+	createProductsView() {
+		const products = this.state.products;
+		const count = [];
+		const productsArray = [];
+
+		for (let i = 0; i < products.length; i++) {
+			let validate = true;
+			for (let j = 0; j < count.length; j++) {
+				if (count[j].product_id === products[i].product_id) validate = false;
+			}
+			if (validate) {
+				count.push({ product_id: products[i].product_id, count: 1 });
+			} else {
+				count.map(element => {
+					if (element.product_id === products[i].product_id) element.count++;
+					return element;
+				});
+			}
+		}
+
+		for (let i = 0; i < products.length; i++) {
+			let validate = true;
+			for (let j = 0; j < productsArray.length; j++) {
+				if (count[j].product_id === products[i].product_id) validate = false;
+			}
+			if (validate) {
+				const a = count.find(element => {
+					return element.product_id === products[i].product_id;
+				});
+				console.log(a);
+				productsArray.push({ ...products[i], count: a.count });
+			}
+		}
+		this.setState({ productsView: productsArray });
+	}
+
 	componentDidMount() {
 		const self = this;
 		fetch('/api/cart', {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',
-				Authorization:
-					'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJFY29tbWVyY2UiLCJzdWIiOjEsImlhdCI6MTU0MzE0ODM5MzA3OSwiZXhvIjoxNTQzMjM0NzkzMDc5fQ.MGrtksGAN51ZWKjICtjAb_wV4T7IwNcOkJIaowtLsFM'
+				Authorization: authGuard.token
 			}
 		})
 			.then(data => data.json())
 			.then(data => {
 				self.setState({ products: data.products });
-				console.log(data.products);
+				this.createProductsView();
 			});
 	}
 
-	handleRemove(id, event) {
+	async handleDecrement(id, event) {
+		fetch(`/api/cart/${id}`, {
+			method: 'DELETE',
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: authGuard.token
+			}
+		});
+
+		const products = this.state.products.filter(element => element.cart_id !== id);
+
+		console.log(this.state.products, products);
+
+		await this.setState({
+			products
+		});
+
+		await this.props.decrementCartCount();
+
+		await this.createProductsView();
+		event.preventDefault();
+	}
+
+	async handleIncrement(id, event) {
+		await fetch(`/api/cart/${id}`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization:
+					'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJFY29tbWVyY2UiLCJzdWIiOjEsImlhdCI6MTU0MzE0ODM5MzA3OSwiZXhvIjoxNTQzMjM0NzkzMDc5fQ.MGrtksGAN51ZWKjICtjAb_wV4T7IwNcOkJIaowtLsFM'
+			}
+		});
+
+		await this.componentDidMount();
+		await this.props.incrementCartCount();
+		event.preventDefault();
+	}
+
+	async handleRemove(id, event) {
 		fetch(`/api/cart/${id}`, {
 			method: 'DELETE',
 			headers: {
@@ -36,25 +112,24 @@ export default class Cart extends Component {
 
 		console.log(this.state.products, products);
 
-		this.setState({
+		await this.setState({
 			products
 		});
 
-		this.props.decrementCartCount();
+		await this.props.decrementCartCount();
+
+		await this.createProductsView();
 		event.preventDefault();
 	}
+
 	render() {
-		const products = this.state.products.map(element => {
-			const { cart_id, product_id, name, price, svg } = element;
+		const products = this.state.productsView.map((element, index) => {
+			const { cart_id, product_id, name, price, svg, count } = element;
 
 			return (
-				<li className="nav-item">
+				<li className="nav-item" key={index}>
 					<div className="col">
-						<img
-							src={`data:image/svg+xml;base64,${svg}`}
-							alt={name}
-							className="order-image"
-						/>
+						<img src={svg} alt={name} className="order-image" />
 						<h2 className="order-name">
 							<Link to={`/products/${product_id}`} className="order-link">
 								{name}
@@ -68,19 +143,25 @@ export default class Cart extends Component {
 						</h2>
 
 						<div className="col-inline">
-							<Link to="" className="btn btn-add btn-step btn-step-minus order-sm">
+							<span
+								onClick={this.handleDecrement.bind(this, cart_id)}
+								className="btn btn-add btn-step btn-step-minus order-sm"
+							>
 								<i className="fas fa-minus" />
-							</Link>
+							</span>
 							<input
 								type="number"
 								id="item-1-count"
 								name="fnaitem-1-countme"
-								value="1"
+								value={count}
 								className="form-input order-sm"
 							/>
-							<Link to="" className="btn btn-add btn-step btn-step-plus order-sm">
+							<span
+								onClick={this.handleIncrement.bind(this, product_id)}
+								className="btn btn-add btn-step btn-step-plus order-sm"
+							>
 								<i className="fas fa-plus" />
-							</Link>
+							</span>
 						</div>
 
 						<span
@@ -93,6 +174,11 @@ export default class Cart extends Component {
 				</li>
 			);
 		});
+
+		const totalPrice = this.state.productsView.reduce((previousValue, currentValue) => {
+			const { price, count } = currentValue;
+			return previousValue + price * count;
+		}, 0);
 
 		return (
 			<main className="order">
@@ -107,6 +193,41 @@ export default class Cart extends Component {
 					</li>
 
 					{products}
+
+					<li className="nav-item order-footer">
+						<div className="col">
+							<form className="form">
+								<div className="row-inline">
+									<div className="row">
+										<label htmlFor="cupone" className="form-label">
+											Cupone code
+										</label>
+										<input
+											type="text"
+											id="cupone"
+											name="cupone"
+											placeholder="Cupone code"
+											className="form-input"
+										/>
+									</div>
+									<div className="row">
+										<button type="submit" className="btn btn-blue form-btn">
+											Use
+										</button>
+									</div>
+								</div>
+							</form>
+						</div>
+
+						<div className="col">
+							<h2 className="order-price">
+								Total price: <span className="order-count">$ {totalPrice}</span>
+							</h2>
+							<Link to="/checkout" className="btn btn-outline">
+								Checkout
+							</Link>
+						</div>
+					</li>
 				</ul>
 			</main>
 		);

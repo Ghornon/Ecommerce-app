@@ -1,9 +1,22 @@
 import React, { Component } from 'react';
+import authGuard from '../helpers/authGuard';
 
-export default class singIn extends Component {
+export default class signIn extends Component {
+	handleSubmit(event) {
+		const self = this;
+		event.preventDefault();
+		const email = event.target.email.value;
+		const password = event.target.password.value;
+		authGuard.signin(email, password, data => {
+			console.log('Sign in...', data);
+			self.props.refreshCartCount();
+			self.forceUpdate();
+		});
+	}
+
 	render() {
 		return (
-			<form className="form">
+			<form className="form" onSubmit={this.handleSubmit.bind(this)}>
 				<div className="row">
 					<label htmlFor="email" className="form-label">
 						E-mail

@@ -5,6 +5,9 @@ import Collapse from './collapse';
 import Cart from './cart';
 
 export default class Header extends Component {
+	handleOnchanege(event) {
+		this.props.setSearchQuery(event.target.value);
+	}
 	render() {
 		return (
 			<header className="navbar">
@@ -14,7 +17,7 @@ export default class Header extends Component {
 					<i className="fas fa-bars" />
 				</label>
 
-				<Collapse />
+				<Collapse refreshCartCount={this.props.refreshCartCount} />
 
 				<Link to="/">
 					<div className="navbar-brand">
@@ -31,7 +34,9 @@ export default class Header extends Component {
 							type="search"
 							className="search-box"
 							placeholder="Search..."
+							value={this.props.searchQuery}
 							id="search-box"
+							onChange={this.handleOnchanege.bind(this)}
 						/>
 						<div className="search-bar" />
 					</div>

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Categories from '../layout/categories';
+import authGuard from '../helpers/authGuard';
 
 export default class Single extends Component {
 	state = {
@@ -20,6 +21,12 @@ export default class Single extends Component {
 				self.setState({ product_id, name, price, description, svg });
 			});
 	}
+
+	handleOnClick(id, event) {
+		event.preventDefault();
+		this.props.addProductToCart(id);
+	}
+
 	render() {
 		const { product_id, name, price, description, svg } = this.state;
 		const descriptionLi = description.split('\n').map((element, index) => {
@@ -37,41 +44,21 @@ export default class Single extends Component {
 					<div className="slider">
 						<ul className="slider-thumbnail">
 							<li className="thumbnail-item active">
-								<img
-									src={`data:image/svg+xml;base64,${svg}`}
-									alt={name}
-									className="thumbnail-img"
-								/>
+								<img src={svg} alt={name} className="thumbnail-img" />
 							</li>
 							<li className="thumbnail-item">
-								<img
-									src={`data:image/svg+xml;base64,${svg}`}
-									alt={name}
-									className="thumbnail-img"
-								/>
+								<img src={svg} alt={name} className="thumbnail-img" />
 							</li>
 							<li className="thumbnail-item">
-								<img
-									src={`data:image/svg+xml;base64,${svg}`}
-									alt={name}
-									className="thumbnail-img"
-								/>
+								<img src={svg} alt={name} className="thumbnail-img" />
 							</li>
 							<li className="thumbnail-item">
-								<img
-									src={`data:image/svg+xml;base64,${svg}`}
-									alt={name}
-									className="thumbnail-img"
-								/>
+								<img src={svg} alt={name} className="thumbnail-img" />
 							</li>
 						</ul>
 
 						<div className="slider-image">
-							<img
-								src={`data:image/svg+xml;base64,${svg}`}
-								alt={name}
-								className="thumbnail-img"
-							/>
+							<img src={svg} alt={name} className="thumbnail-img" />
 						</div>
 					</div>
 
@@ -82,9 +69,12 @@ export default class Single extends Component {
 							Price:
 							<span className="price">$ {price}</span>
 						</div>
-						<a href={`/cart/add/${product_id}`} className="btn btn-blue">
+						<span
+							onClick={this.handleOnClick.bind(this, product_id)}
+							className="btn btn-blue"
+						>
 							<i className="fas fa-plus" /> Add to cart!
-						</a>
+						</span>
 					</div>
 				</div>
 			</main>
