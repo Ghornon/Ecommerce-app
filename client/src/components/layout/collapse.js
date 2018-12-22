@@ -20,7 +20,7 @@ export default class Collapse extends Component {
 		].map((element, index) => {
 			return (
 				<li className="nav-item" key={index}>
-					<Link to={`/${index}`} className="nav-link">
+					<Link to={`/${index}`} className="nav-link" onClick={this.props.toggleCollapse}>
 						{element}
 					</Link>
 				</li>
@@ -33,27 +33,35 @@ export default class Collapse extends Component {
 					<h1 className="nav-header text-center">Sign in</h1>
 				</li>
 				<li className="nav-item">
-					<SignIn refreshCartCount={this.props.refreshCartCount} />
+					<SignIn
+						refreshCartCount={this.props.refreshCartCount}
+						alert={this.props.alert}
+					/>
 				</li>
 			</ul>
 		);
 
 		if (authGuard.isAuthenticated) {
+			const navItems = ['Profile', 'Cart', 'Orders'].map(element => {
+				return (
+					<li className="nav-item" key={element}>
+						<Link
+							to={`/${element.toLowerCase()}`}
+							className="nav-link"
+							onClick={this.props.toggleCollapse}
+						>
+							{element}
+						</Link>
+					</li>
+				);
+			});
+
 			User = withRouter(({ history }) => (
 				<ul className="nav">
 					<li className="nav-item">
 						<h1 className="nav-header">User nav</h1>
 					</li>
-					<li className="nav-item">
-						<Link to="/cart" className="nav-link">
-							Cart
-						</Link>
-					</li>
-					<li className="nav-item">
-						<Link to="/orders" className="nav-link">
-							Orders
-						</Link>
-					</li>
+					{navItems}
 					<li className="nav-item">
 						<Link
 							onClick={event => {

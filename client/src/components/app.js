@@ -5,6 +5,7 @@ import { Route, Redirect } from 'react-router-dom';
 
 import Header from './layout/Header';
 import Footer from './layout/Footer';
+import Alert from './layout/Alert';
 
 // Pages
 import Home from './pages/Home';
@@ -33,7 +34,10 @@ export default class App extends Component {
 		this.state = {
 			cartCount: 0,
 			products: [],
-			searchQuery: ''
+			searchQuery: '',
+			alertType: 'success',
+			alertMessage: 'Welcome',
+			alertVisible: false
 		};
 	}
 
@@ -41,6 +45,7 @@ export default class App extends Component {
 		this.refreshCartCount();
 	}
 
+	// Cart
 	refreshCartCount() {
 		const self = this;
 		if (authGuard.isAuthenticated) {
@@ -60,34 +65,18 @@ export default class App extends Component {
 		}
 	}
 
-	search(query) {
-		return this.state.products.filter(element => {
-			const name = element.name.toLowerCase();
-			const regex = new RegExp(query.toLowerCase());
-			return regex.test(name);
-		});
-	}
-
-	setSearchQuery(searchQuery) {
-		this.setState({ searchQuery });
-	}
-
 	incrementCartCount() {
-		if (authGuard.isAuthenticated) this.setState({ cartCount: this.state.cartCount + 1 });
+		if (authGuard.isAuthenticated) {
+			this.setState({ cartCount: this.state.cartCount + 1 });
+			this.showAlert('Product count increased!', 'success');
+		}
 	}
 
 	decrementCartCount() {
-		if (authGuard.isAuthenticated) this.setState({ cartCount: this.state.cartCount - 1 });
-	}
-
-	getProducts() {
-		const self = this;
-		fetch('/api/products')
-			.then(data => data.json())
-			.then(data => {
-				console.log(data);
-				self.setState({ products: data.products });
-			});
+		if (authGuard.isAuthenticated) {
+			this.setState({ cartCount: this.state.cartCount - 1 });
+			this.showAlert('Product count decreased!', 'success');
+		}
 	}
 
 	async addProductToCart(id) {
@@ -101,9 +90,45 @@ export default class App extends Component {
 			});
 			console.log(result);
 			if (result.status === 204) this.incrementCartCount();
+			this.showAlert('Product added to cart!', 'success');
 		}
 	}
 
+	// Search query
+	search(query) {
+		return this.state.products.filter(element => {
+			const name = element.name.toLowerCase();
+			const regex = new RegExp(query.toLowerCase());
+			return regex.test(name);
+		});
+	}
+
+	setSearchQuery(searchQuery) {
+		this.setState({ searchQuery });
+	}
+
+	// Products
+	getProducts() {
+		const self = this;
+		fetch('/api/products')
+			.then(data => data.json())
+			.then(data => {
+				console.log(data);
+				self.setState({ products: data.products });
+			});
+	}
+
+	// Alert
+	showAlert(message, type) {
+		this.setState({ alertType: type, alertMessage: message, alertVisible: true });
+		setTimeout(this.hideAlert.bind(this), 1000 * 5);
+	}
+
+	hideAlert() {
+		this.setState({ alertVisible: false });
+	}
+
+	// Render
 	render() {
 		return (
 			<div>
@@ -112,6 +137,7 @@ export default class App extends Component {
 					refreshCartCount={this.refreshCartCount.bind(this)}
 					setSearchQuery={this.setSearchQuery.bind(this)}
 					searchQuery={this.state.searchQuery}
+					alert={this.showAlert.bind(this)}
 				/>
 				<Route
 					exact
@@ -123,10 +149,10 @@ export default class App extends Component {
 							getProducts={this.getProducts.bind(this)}
 							addProductToCart={this.addProductToCart.bind(this)}
 							incrementCartCount={this.incrementCartCount.bind(this)}
+							alert={this.showAlert.bind(this)}
 						/>
 					)}
 				/>
-				<Route exact path="/home" render={props => <Home {...props} />} />
 				<PrivateRoute
 					exact
 					path="/cart"
@@ -141,12 +167,23 @@ export default class App extends Component {
 				<Route
 					path="/products/:id"
 					render={props => (
-						<Single {...props} addProductToCart={this.addProductToCart.bind(this)} />
+						<Single
+							{...props}
+							addProductToCart={this.addProductToCart.bind(this)}
+							alert={this.showAlert.bind(this)}
+						/>
 					)}
 				/>
 				<Route path="/profile" render={props => <Profile {...props} />} />
 				<Route path="/signup" render={props => <Signup {...props} />} />
 				<Route path="/forget" render={props => <Forget {...props} />} />
+
+				<Alert
+					message={this.state.alertMessage}
+					type={this.state.alertType}
+					visible={this.state.alertVisible}
+					hide={this.hideAlert.bind(this)}
+				/>
 				<Footer />
 			</div>
 		);

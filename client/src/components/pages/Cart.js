@@ -46,18 +46,20 @@ export default class Cart extends Component {
 
 	componentDidMount() {
 		const self = this;
-		fetch('/api/cart', {
-			method: 'GET',
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: authGuard.token
-			}
-		})
-			.then(data => data.json())
-			.then(data => {
-				self.setState({ products: data.products });
-				this.createProductsView();
-			});
+		if (authGuard.isAuthenticated) {
+			fetch('/api/cart', {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: authGuard.token
+				}
+			})
+				.then(data => data.json())
+				.then(data => {
+					self.setState({ products: data.products });
+					this.createProductsView();
+				});
+		}
 	}
 
 	async handleDecrement(id, event) {
@@ -88,12 +90,11 @@ export default class Cart extends Component {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
-				Authorization:
-					'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJFY29tbWVyY2UiLCJzdWIiOjEsImlhdCI6MTU0MzE0ODM5MzA3OSwiZXhvIjoxNTQzMjM0NzkzMDc5fQ.MGrtksGAN51ZWKjICtjAb_wV4T7IwNcOkJIaowtLsFM'
+				Authorization: authGuard.token
 			}
 		});
 
-		await this.componentDidMount();
+		await this.forceUpdate();
 		await this.props.incrementCartCount();
 		event.preventDefault();
 	}
@@ -103,8 +104,7 @@ export default class Cart extends Component {
 			method: 'DELETE',
 			headers: {
 				'Content-Type': 'application/json',
-				Authorization:
-					'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJFY29tbWVyY2UiLCJzdWIiOjEsImlhdCI6MTU0MzE0ODM5MzA3OSwiZXhvIjoxNTQzMjM0NzkzMDc5fQ.MGrtksGAN51ZWKjICtjAb_wV4T7IwNcOkJIaowtLsFM'
+				Authorization: authGuard.token
 			}
 		});
 

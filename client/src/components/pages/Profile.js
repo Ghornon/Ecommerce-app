@@ -1,8 +1,112 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
+
+import ProfileForm from '../layout/profileForm';
+import AddressForm from '../layout/addressForm';
+import authGuard from '../helpers/authGuard';
 
 export default class Profile extends Component {
+	state = {
+		profile: {},
+		address: {}
+	};
+
+	componentDidMount() {
+		const self = this;
+		if (authGuard.isAuthenticated) {
+			fetch('/api/users/profile', {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: authGuard.token
+				}
+			})
+				.then(data => (data.ok ? data.json() : {}))
+				.then(data => {
+					self.setState(state => {
+						return {
+							...state,
+							profile: {
+								...data
+							}
+						};
+					});
+				});
+
+			/* fetch('/api/users/address', {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: authGuard.token
+				}
+			})
+				.then(data => (data.ok ? data.json() : {}))
+				.then(data => {
+					self.setState(state => {
+						return {
+							...state,
+							profile: {
+								...data
+							}
+						};
+					});
+				}); */
+
+			/* fetch('/api/users/payment', {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: authGuard.token
+				}
+			})
+				.then(data => data.json())
+				.then(data => {
+					self.setState({ ...self.state, ...data });
+				}); */
+		}
+	}
+
 	render() {
+		const navItems = ['Profile', 'Cart', 'Orders'].map(element => {
+			return (
+				<li className="nav-item" key={element}>
+					<Link
+						to={`/${element.toLowerCase()}`}
+						className="nav-link"
+						onClick={this.props.toggleCollapse}
+					>
+						{element}
+					</Link>
+				</li>
+			);
+		});
+
+		const UserNav = withRouter(({ history }) => (
+			<ul className="nav">
+				<li className="nav-item">
+					<h1 className="nav-header-2">Menu</h1>
+				</li>
+				{navItems}
+				<li className="nav-item">
+					<Link
+						onClick={event => {
+							event.preventDefault();
+							authGuard.signout(() => {
+								this.props.refreshCartCount();
+								history.push('/');
+							});
+						}}
+						to="/signout"
+						className="nav-link"
+					>
+						Sign out
+					</Link>
+				</li>
+			</ul>
+		));
+
+		console.log(this.state);
+
 		return (
 			<main className="profile">
 				<aside className="sidebar">
@@ -10,167 +114,21 @@ export default class Profile extends Component {
 						<img src="dist/img/user.png" alt="user" className="img" />
 					</div>
 
-					<h2 className="sidebar-name">John Smith</h2>
+					<h2 className="sidebar-name">
+						{this.state.profile.fname + ' ' + this.state.profile.lname}
+					</h2>
 
 					<hr />
 
-					<ul className="nav">
-						<li className="nav-item">
-							<h1 className="nav-header-2">Menu</h1>
-						</li>
-						<li className="nav-item">
-							<Link to="/cart" className="nav-link">
-								Cart
-							</Link>
-						</li>
-						<li className="nav-item">
-							<Link to="/orders" className="nav-link">
-								Orders
-							</Link>
-						</li>
-						<li className="nav-item">
-							<Link to="/logout" className="nav-link">
-								Log out
-							</Link>
-						</li>
-					</ul>
+					<UserNav />
 				</aside>
 
 				<div className="data">
-					<form action="/users/profile" method="POST" className="form">
-						<div className="row">
-							<h1 className="header">Personal</h1>
-						</div>
-						<div className="row">
-							<label htmlFor="fname" className="form-label">
-								First name
-							</label>
-							<input
-								type="text"
-								id="fname"
-								name="fname"
-								placeholder="John"
-								className="form-input"
-							/>
-						</div>
-						<div className="row">
-							<label htmlFor="lname" className="form-label">
-								Last name
-							</label>
-							<input
-								type="text"
-								id="lname"
-								name="lname"
-								placeholder="Smith"
-								className="form-input"
-							/>
-						</div>
-						<div className="row">
-							<label htmlFor="email" className="form-label">
-								E-mail
-							</label>
-							<input
-								type="text"
-								id="email"
-								name="email"
-								placeholder="email@example.com"
-								className="form-input"
-							/>
-						</div>
-						<div className="row">
-							<label htmlFor="password" className="form-label">
-								Passsword
-							</label>
-							<input
-								type="password"
-								id="password"
-								name="password"
-								placeholder="********"
-								className="form-input"
-							/>
-						</div>
-						<div className="row">
-							<label htmlFor="retype" className="form-label">
-								Retype
-							</label>
-							<input
-								type="password"
-								id="retype"
-								name="retype"
-								placeholder="********"
-								className="form-input"
-							/>
-						</div>
-						<div className="row no-padding">
-							<button type="submit" className="btn btn-blue form-btn">
-								Submit
-							</button>
-						</div>
-					</form>
+					<ProfileForm {...this.state.profile} />
 
 					<hr />
 
-					<form action="/users/address" method="POST" className="form">
-						<div className="row">
-							<h1 className="header">Billing address</h1>
-						</div>
-
-						<div className="row">
-							<label htmlFor="address" className="form-label">
-								Address
-							</label>
-							<input
-								type="text"
-								id="address"
-								name="address"
-								placeholder="1234 Main St"
-								className="form-input"
-							/>
-						</div>
-						<div className="row-inline">
-							<div className="row">
-								<label htmlFor="country" className="form-label">
-									Country
-								</label>
-								<input
-									type="text"
-									id="country"
-									name="country"
-									placeholder="United States"
-									className="form-input"
-								/>
-							</div>
-							<div className="row">
-								<label htmlFor="state" className="form-label">
-									State
-								</label>
-								<input
-									type="text"
-									id="state"
-									name="state"
-									placeholder="California"
-									className="form-input"
-								/>
-							</div>
-							<div className="row">
-								<label htmlFor="zip" className="form-label">
-									Zip code
-								</label>
-								<input
-									type="text"
-									id="zip"
-									name="zip"
-									placeholder="90001"
-									className="form-input"
-								/>
-							</div>
-						</div>
-						<div className="row no-padding">
-							<button type="submit" className="btn btn-blue form-btn">
-								Save
-							</button>
-						</div>
-					</form>
+					<AddressForm {...this.state.address} />
 
 					<hr />
 

@@ -8,6 +8,16 @@ export default class Header extends Component {
 	handleOnchanege(event) {
 		this.props.setSearchQuery(event.target.value);
 	}
+
+	toggleCollapse() {
+		const button = document.querySelector('#nav-collapse-btn');
+		if (button.checked === true) {
+			button.checked = false;
+		} else {
+			button.checked = true;
+		}
+	}
+
 	render() {
 		return (
 			<header className="navbar">
@@ -17,7 +27,11 @@ export default class Header extends Component {
 					<i className="fas fa-bars" />
 				</label>
 
-				<Collapse refreshCartCount={this.props.refreshCartCount} />
+				<Collapse
+					refreshCartCount={this.props.refreshCartCount}
+					toggleCollapse={this.toggleCollapse.bind(this)}
+					alert={this.props.alert}
+				/>
 
 				<Link to="/">
 					<div className="navbar-brand">

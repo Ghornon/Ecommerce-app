@@ -9,8 +9,10 @@ export default class signIn extends Component {
 		const password = event.target.password.value;
 		authGuard.signin(email, password, data => {
 			console.log('Sign in...', data);
-			self.props.refreshCartCount();
-			self.forceUpdate();
+			if (data.token) {
+				self.props.refreshCartCount();
+				self.forceUpdate();
+			} else self.props.alert('Bad email or password!', 'donger');
 		});
 	}
 

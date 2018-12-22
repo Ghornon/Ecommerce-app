@@ -24,7 +24,11 @@ export default class Single extends Component {
 
 	handleOnClick(id, event) {
 		event.preventDefault();
-		this.props.addProductToCart(id);
+		if (authGuard.isAuthenticated) {
+			this.props.addProductToCart(id);
+		} else {
+			this.props.alert('You need to be logged if u want to add product to cart', 'warning');
+		}
 	}
 
 	render() {
