@@ -56,9 +56,7 @@ const schemas = {
 			.positive()
 	}),
 	paymentSchema: Joi.object().keys({
-		name: Joi.string()
-			.min(3)
-			.alphanum(),
+		name: Joi.string().min(3),
 		number: Joi.number()
 			.integer()
 			.positive(),
