@@ -67,10 +67,18 @@ const setProfile = async (req, res) => {
 
 // User address controller
 const getAddress = async (req, res) => {
-	const { address, country, state, zip } = req.user;
+	const id = req.user.user_id;
+
+	const result = await database.query('SELECT * FROM address WHERE user_id = ?', [id]);
+
+	if (result.length <= 0) {
+		return res.status(404).json();
+	}
+
+	const { address, country, state, zip } = result[0];
 
 	// Send result
-	res.status(200).json({
+	return res.status(200).json({
 		address,
 		country,
 		state,
@@ -86,14 +94,14 @@ const setAddress = async (req, res) => {
 
 	if (rows.length === 0) {
 		await database.query(
-			'INSERT INTO address (user_id, address, country, fname, zip) VALUES (?, ?, ?, ?, ?)',
+			'INSERT INTO address (user_id, address, country, state, zip) VALUES (?, ?, ?, ?, ?)',
 			[id, address, country, state, zip]
 		);
 		return res.status(201).json();
 	}
 
 	await database.query(
-		'UPDATE address SET address = ?, country = ?, fname = ?, zip = ? WHERE user_id = ?',
+		'UPDATE address SET address = ?, country = ?, state = ?, zip = ? WHERE user_id = ?',
 		[address, country, state, zip, id]
 	);
 	return res.status(204).json();
@@ -101,10 +109,18 @@ const setAddress = async (req, res) => {
 
 // User address controller
 const getPayments = async (req, res) => {
-	const { name, number, expiration, ccv } = req.user;
+	const id = req.user.user_id;
+
+	const result = await database.query('SELECT * FROM payments WHERE user_id = ?', [id]);
+
+	if (result.length <= 0) {
+		return res.status(404).json();
+	}
+
+	const { name, number, expiration, ccv } = result[0];
 
 	// Send result
-	res.status(200).json({
+	return res.status(200).json({
 		name,
 		number,
 		expiration,
