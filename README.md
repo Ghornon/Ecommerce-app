@@ -1,3 +1,64 @@
+# Ecommerce app
+
+It is my first React app with my own backend API.
+App isn't perfect but work :) Have fun!
+Images used in project are from [flaticon.com](https://www.flaticon.com/packs/color-design-tools)
+
+### #1: Download
+
+Clone files to your computer. If you want to use wordpress, use the "/wp-contentt/themes" dir. Next install node dependencies.
+
+```bash
+$ git clone https://github.com/Ghornon/Ecommerce-app.git dirName
+$ cd dirName
+```
+
+### #2: Setup database
+
+Downlad and install MySQL (https://www.mysql.com/)
+
+### #2.1: Import ecommerce.sql
+
+Import included [eccommerce.sql](https://github.com/Ghornon/Ecommerce-app/blob/master/ecommerce.sql) file into your database
+
+### #2.2: Change your connection information
+
+Go to `server/config/index.js` and modify **DB_CONFIG** to connect with your database.
+
+```JavaScript
+const DB_CONFIG = {
+	host: 'localhost',
+	user: 'root',
+	password: '',
+	database: 'ecommerce',
+	connectionLimit: 10,
+};
+```
+
+### #3: Install dependencies
+
+I used create-react-app for easier setup so you need to install it
+
+```bash
+$ npm install -g create-react-app
+$ cd client
+$ npm install
+# AND server
+$ cd server
+$ npm install
+```
+
+### #4: Run app
+
+```bash
+$ cd client
+$ npm start
+# OR
+$ cd server
+$ npm start
+# To stop press CTRL + C
+```
+
 # API Routes documentation
 
 1. Users
