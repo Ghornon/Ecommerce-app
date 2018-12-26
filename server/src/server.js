@@ -6,6 +6,7 @@ import chalk from 'chalk';
 import usersRoutes from './routes/users';
 import cartRoutes from './routes/cart';
 import productsRouter from './routes/products';
+import ordersRouter from './routes/orders';
 
 const app = express();
 
@@ -17,6 +18,7 @@ app.use(bodyParser.json());
 app.use('/api/users', usersRoutes);
 app.use('/api/cart', cartRoutes);
 app.use('/api/products', productsRouter);
+app.use('/api/orders', ordersRouter);
 
 /* eslint no-console: 0 */
 
