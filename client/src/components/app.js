@@ -14,6 +14,7 @@ import Single from './pages/Single';
 import Profile from './pages/Profile';
 import Signup from './pages/Signup';
 import Forget from './pages/Forget';
+import Orders from './pages/Orders';
 
 // Helpers
 import authGuard from './helpers/authGuard';
@@ -164,6 +165,7 @@ export default class App extends Component {
 						/>
 					)}
 				/>
+				<PrivateRoute exact path="/orders" component={props => <Orders {...props} />} />
 				<Route
 					path="/products/:id"
 					render={props => (
