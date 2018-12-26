@@ -12,7 +12,7 @@ const get = async (req, res) => {
 		return res.status(200).json({ products });
 	}
 
-	return res.status(404).json();
+	return res.status(404).json({ products });
 };
 
 const add = async (req, res) => {

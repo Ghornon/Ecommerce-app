@@ -100,7 +100,7 @@ export default class Cart extends Component {
 	}
 
 	async handleRemove(id, event) {
-		fetch(`/api/cart/${id}`, {
+		await fetch(`/api/cart/${id}`, {
 			method: 'DELETE',
 			headers: {
 				'Content-Type': 'application/json',
@@ -120,6 +120,17 @@ export default class Cart extends Component {
 
 		await this.createProductsView();
 		event.preventDefault();
+	}
+
+	checkout(event) {
+		event.preventDefault();
+		fetch(`/api/orders`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: authGuard.token
+			}
+		});
 	}
 
 	render() {
@@ -223,9 +234,9 @@ export default class Cart extends Component {
 							<h2 className="order-price">
 								Total price: <span className="order-count">$ {totalPrice}</span>
 							</h2>
-							<Link to="/checkout" className="btn btn-outline">
+							<span onClick={this.checkout.bind(this)} className="btn btn-outline">
 								Checkout
-							</Link>
+							</span>
 						</div>
 					</li>
 				</ul>
