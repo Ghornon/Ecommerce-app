@@ -36,6 +36,30 @@ class AuthGuard {
 		return callback(status.statusText);
 	}
 
+	async signup(email, password, retype, fname, lname, callback) {
+		const status = await fetch('/api/users/signup', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				email,
+				password,
+				retype,
+				fname,
+				lname
+			})
+		}).then(data => data.json());
+
+		if (status.token) {
+			this._authenticate(status.token);
+			return callback(status);
+		}
+
+		console.log(status.error[0]);
+		return callback(status.error[0]);
+	}
+
 	signout(callback) {
 		this.isAuthenticated = false;
 		this.token = null;

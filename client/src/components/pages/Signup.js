@@ -1,10 +1,43 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
+import authGuard from '../helpers/authGuard';
 
 export default class Signup extends Component {
+	state = {
+		redirect: false
+	};
+
+	handleOnSubmit(event) {
+		event.preventDefault();
+		const { email, password, retype, fname, lname } = event.target;
+		const self = this;
+		authGuard.signup(
+			email.value,
+			password.value,
+			retype.value,
+			fname.value,
+			lname.value,
+			data => {
+				if (data.token) {
+					self.props.alert('Sign up successful', 'success');
+					self.setState({
+						redirect: true
+					});
+				} else {
+					self.props.alert(data.message, 'donger');
+				}
+			}
+		);
+	}
+
 	render() {
+		if (this.state.redirect || authGuard.isAuthenticated) {
+			return <Redirect to="/" />;
+		}
+
 		return (
 			<main className="prompt">
-				<form action="/signup" method="POST" className="form">
+				<form className="form" onSubmit={this.handleOnSubmit.bind(this)}>
 					<div className="row">
 						<label htmlFor="fname" className="form-label">
 							First name
@@ -30,24 +63,24 @@ export default class Signup extends Component {
 						/>
 					</div>
 					<div className="row">
-						<label htmlFor="email" className="form-label">
+						<label htmlFor="signupemail" className="form-label">
 							E-mail
 						</label>
 						<input
 							type="text"
-							id="email"
+							id="signupemail"
 							name="email"
 							placeholder="email@example.com"
 							className="form-input"
 						/>
 					</div>
 					<div className="row">
-						<label htmlFor="password" className="form-label">
+						<label htmlFor="signuppassword" className="form-label">
 							Passsword
 						</label>
 						<input
 							type="password"
-							id="password"
+							id="signuppassword"
 							name="password"
 							placeholder="********"
 							className="form-input"

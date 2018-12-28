@@ -15,11 +15,12 @@ import Profile from './pages/Profile';
 import Signup from './pages/Signup';
 import Forget from './pages/Forget';
 import Orders from './pages/Orders';
+import OrdersList from './pages/OrdersList';
 
 // Helpers
 import authGuard from './helpers/authGuard';
 
-const PrivateRoute = ({ component: Component, ...rest }) => (
+const PrivateRoute = ({ component: Component, ...rest }, alert) => (
 	<Route
 		{...rest}
 		render={props =>
@@ -166,6 +167,16 @@ export default class App extends Component {
 					)}
 				/>
 				<PrivateRoute exact path="/orders" component={props => <Orders {...props} />} />
+				<PrivateRoute
+					path="/order/:id"
+					component={props => (
+						<OrdersList
+							{...props}
+							addProductToCart={this.addProductToCart.bind(this)}
+							alert={this.showAlert.bind(this)}
+						/>
+					)}
+				/>
 				<Route
 					path="/products/:id"
 					render={props => (
@@ -177,7 +188,10 @@ export default class App extends Component {
 					)}
 				/>
 				<Route path="/profile" render={props => <Profile {...props} />} />
-				<Route path="/signup" render={props => <Signup {...props} />} />
+				<Route
+					path="/signup"
+					render={props => <Signup {...props} alert={this.showAlert.bind(this)} />}
+				/>
 				<Route path="/forget" render={props => <Forget {...props} />} />
 
 				<Alert

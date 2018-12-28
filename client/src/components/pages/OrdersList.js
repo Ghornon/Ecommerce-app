@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import authGuard from '../helpers/authGuard';
 
-export default class Orders extends Component {
+export default class OrdersList extends Component {
 	state = {
 		orders: []
 	};
@@ -24,31 +24,25 @@ export default class Orders extends Component {
 
 	render() {
 		console.log(this.state.orders);
+		const id = parseInt(this.props.match.params.id);
+		const orders = this.state.orders.filter(element => element.shipping_id === id);
 
-		const ordersNumbers = [...new Set(this.state.orders.map(item => item.shipping_id))];
+		const totalPrice = orders.reduceRight(
+			(previousValue, element) => previousValue + element.price,
+			0
+		);
 
-		const ordersList = ordersNumbers.map(id => {
-			const price = this.state.orders.reduceRight((previousValue, element) => {
-				return element.shipping_id === id ? previousValue + element.price : previousValue;
-			}, 0);
-
-			const status = this.state.orders.find(element => element.shipping_id === id).status;
+		const ordersList = orders.map((element, index) => {
 			return (
-				<li className="nav-item" key={id}>
+				<li className="nav-item" key={index}>
 					<div className="col">
-						<h2 className="order-name">
-							<Link to={`/order/${id}`} className="order-link">
-								Order #{id}
-							</Link>
-						</h2>
+						<h2 className="order-name">{element.name}</h2>
 					</div>
 
 					<div className="col">
 						<h2 className="order-price">
-							<span className="order-count">$ {price}</span>
+							<span className="order-count">$ {element.price}</span>
 						</h2>
-
-						<h2 className="order-status">{status}</h2>
 					</div>
 				</li>
 			);
@@ -59,8 +53,11 @@ export default class Orders extends Component {
 				<ul className="nav">
 					<li className="nav-item order-header">
 						<h1 className="nav-header">
-							<i className="fas fa-shopping-cart" /> Orders
+							<i className="fas fa-shopping-cart" /> Order #{id}
 						</h1>
+						<h2>
+							Total price: <span className="order-count">$ {totalPrice}</span>
+						</h2>
 					</li>
 					{ordersList}
 				</ul>
