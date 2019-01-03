@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import authGuard from '../helpers/authGuard';
 
 export default class Cart extends Component {
-	state = {
-		products: [],
-		productsView: []
-	};
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			products: [],
+			productsView: []
+		};
+	}
 
 	createProductsView() {
 		const products = this.state.products;
@@ -134,6 +138,10 @@ export default class Cart extends Component {
 	}
 
 	render() {
+		if (!authGuard.isAuthenticated) {
+			return <Redirect to="/" />;
+		}
+
 		const products = this.state.productsView.map((element, index) => {
 			const { cart_id, product_id, name, price, svg, count } = element;
 

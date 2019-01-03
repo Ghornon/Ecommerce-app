@@ -1,15 +1,20 @@
 import React, { Component } from 'react';
-import { Link, withRouter } from 'react-router-dom';
+import { Link, withRouter, Redirect } from 'react-router-dom';
 
-import ProfileForm from '../layout/profileForm';
-import AddressForm from '../layout/addressForm';
-import authGuard from '../helpers/authGuard';
+import { ProfileForm, AddressForm, PaymentForm } from './Forms';
+
+import authGuard from '../../helpers/authGuard';
 
 export default class Profile extends Component {
-	state = {
-		profile: {},
-		address: {}
-	};
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			profile: {},
+			address: {},
+			payment: {}
+		};
+	}
 
 	componentDidMount() {
 		const self = this;
@@ -33,7 +38,7 @@ export default class Profile extends Component {
 					});
 				});
 
-			/* fetch('/api/users/address', {
+			fetch('/api/users/address', {
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json',
@@ -45,28 +50,40 @@ export default class Profile extends Component {
 					self.setState(state => {
 						return {
 							...state,
-							profile: {
+							address: {
 								...data
 							}
 						};
 					});
-				}); */
+				});
 
-			/* fetch('/api/users/payment', {
+			fetch('/api/users/payment', {
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json',
 					Authorization: authGuard.token
 				}
 			})
-				.then(data => data.json())
+				.then(data => (data.ok ? data.json() : {}))
 				.then(data => {
-					self.setState({ ...self.state, ...data });
-				}); */
+					self.setState(state => {
+						return {
+							...state,
+							payment: {
+								...data,
+								expiration: data.expiration.slice(0, 10)
+							}
+						};
+					});
+				});
 		}
 	}
 
 	render() {
+		if (!authGuard.isAuthenticated) {
+			return <Redirect to="/" />;
+		}
+
 		const navItems = ['Profile', 'Cart', 'Orders'].map(element => {
 			return (
 				<li className="nav-item" key={element}>
@@ -105,13 +122,11 @@ export default class Profile extends Component {
 			</ul>
 		));
 
-		console.log(this.state);
-
 		return (
 			<main className="profile">
 				<aside className="sidebar">
 					<div className="sidebar-image">
-						<img src="dist/img/user.png" alt="user" className="img" />
+						<img src="/user.png" alt="user" className="img" />
 					</div>
 
 					<h2 className="sidebar-name">
@@ -125,75 +140,10 @@ export default class Profile extends Component {
 
 				<div className="data">
 					<ProfileForm {...this.state.profile} />
-
 					<hr />
-
 					<AddressForm {...this.state.address} />
-
 					<hr />
-
-					<form action="/users/payment" method="POST" className="form">
-						<div className="row">
-							<h1 className="header">Payment (Credit card)</h1>
-						</div>
-
-						<div className="row">
-							<label htmlFor="name" className="form-label">
-								Name on card
-							</label>
-							<input
-								type="text"
-								id="name"
-								name="name"
-								placeholder="John Smith"
-								className="form-input"
-							/>
-						</div>
-						<div className="row-inline">
-							<div className="row">
-								<label htmlFor="card-number" className="form-label">
-									Credit card number
-								</label>
-								<input
-									type="text"
-									id="card-number"
-									name="card-number"
-									placeholder="5500 0000 0000 0004"
-									className="form-input"
-								/>
-							</div>
-							<div className="row">
-								<label htmlFor="card-expiration" className="form-label">
-									Expiration
-								</label>
-								<input
-									type="month"
-									id="card-expiration"
-									name="card-expiration"
-									placeholder="2021-06"
-									className="form-input"
-									value="2021-06"
-								/>
-							</div>
-						</div>
-						<div className="row">
-							<label htmlFor="CCV" className="form-label">
-								CCV
-							</label>
-							<input
-								type="text"
-								id="CCV"
-								name="CCV"
-								placeholder="123"
-								className="form-input"
-							/>
-						</div>
-						<div className="row no-padding">
-							<button type="submit" className="btn btn-blue form-btn">
-								Save
-							</button>
-						</div>
-					</form>
+					<PaymentForm {...this.state.payment} />
 				</div>
 			</main>
 		);

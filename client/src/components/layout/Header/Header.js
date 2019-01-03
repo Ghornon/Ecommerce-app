@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
-import Collapse from './collapse';
-import Cart from './cart';
+import { Collapse, CartBadge } from './HeaderNav';
 
 export default class Header extends Component {
 	handleOnchanege(event) {
-		this.props.setSearchQuery(event.target.value);
+		this.props.search(event.target.value);
 	}
 
 	toggleCollapse() {
@@ -41,7 +40,7 @@ export default class Header extends Component {
 				</Link>
 
 				<div className="navbar-nav">
-					<Cart count={this.props.cartCount} />
+					<CartBadge count={this.props.cartCount} />
 
 					<div className="search">
 						<input

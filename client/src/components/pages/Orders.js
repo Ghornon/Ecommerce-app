@@ -1,29 +1,37 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import authGuard from '../helpers/authGuard';
 
 export default class Orders extends Component {
-	state = {
-		orders: []
-	};
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			orders: []
+		};
+	}
 
 	componentDidMount() {
 		const self = this;
-		fetch(`/api/orders`, {
-			method: 'GET',
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: authGuard.token
-			}
-		})
-			.then(data => data.json())
-			.then(data => {
-				self.setState({ orders: data.orders });
-			});
+		if (authGuard.isAuthenticated) {
+			fetch(`/api/orders`, {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: authGuard.token
+				}
+			})
+				.then(data => data.json())
+				.then(data => {
+					self.setState({ orders: data.orders });
+				});
+		}
 	}
 
 	render() {
-		console.log(this.state.orders);
+		if (!authGuard.isAuthenticated) {
+			return <Redirect to="/" />;
+		}
 
 		const ordersNumbers = [...new Set(this.state.orders.map(item => item.shipping_id))];
 

@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
-import authGuard from '../helpers/authGuard';
+import authGuard from '../../../helpers/authGuard';
 
 export default class signIn extends Component {
 	handleSubmit(event) {
 		const self = this;
 		event.preventDefault();
+
 		const email = event.target.email.value;
 		const password = event.target.password.value;
+
 		authGuard.signin(email, password, data => {
 			console.log('Sign in...', data);
 			if (data.token) {

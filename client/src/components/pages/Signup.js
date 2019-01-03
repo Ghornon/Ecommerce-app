@@ -3,14 +3,20 @@ import { Redirect } from 'react-router-dom';
 import authGuard from '../helpers/authGuard';
 
 export default class Signup extends Component {
-	state = {
-		redirect: false
-	};
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			redirect: false
+		};
+	}
 
 	handleOnSubmit(event) {
 		event.preventDefault();
+
 		const { email, password, retype, fname, lname } = event.target;
 		const self = this;
+
 		authGuard.signup(
 			email.value,
 			password.value,

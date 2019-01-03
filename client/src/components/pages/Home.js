@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
-import Categories from '../layout/categories';
+import { Categories } from '../layout';
 import authGuard from '../helpers/authGuard';
 
 export default class Home extends Component {

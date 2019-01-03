@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import authGuard from '../helpers/authGuard';
+import authGuard from '../../../helpers/authGuard';
 
 export default class ProfileForm extends Component {
 	constructor(props) {
@@ -40,7 +40,6 @@ export default class ProfileForm extends Component {
 	}
 
 	render() {
-		console.log(this.state);
 		return (
 			<form className="form" onSubmit={this.onSubmit.bind(this)}>
 				<div className="row">

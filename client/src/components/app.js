@@ -2,25 +2,15 @@ import React, { Component } from 'react';
 import { Route, Redirect } from 'react-router-dom';
 
 // Layout
-
-import Header from './layout/Header';
-import Footer from './layout/Footer';
-import Alert from './layout/Alert';
+import { Header, Footer, Alert } from './layout';
 
 // Pages
-import Home from './pages/Home';
-import Cart from './pages/Cart';
-import Single from './pages/Single';
-import Profile from './pages/Profile';
-import Signup from './pages/Signup';
-import Forget from './pages/Forget';
-import Orders from './pages/Orders';
-import OrdersList from './pages/OrdersList';
+import { Home, Cart, Single, Profile, Signup, Forget, Orders, OrdersList } from './pages';
 
 // Helpers
 import authGuard from './helpers/authGuard';
 
-const PrivateRoute = ({ component: Component, ...rest }, alert) => (
+const PrivateRoute = ({ component: Component, ...rest }) => (
 	<Route
 		{...rest}
 		render={props =>
@@ -33,6 +23,7 @@ const PrivateRoute = ({ component: Component, ...rest }, alert) => (
 export default class App extends Component {
 	constructor(props) {
 		super(props);
+
 		this.state = {
 			cartCount: 0,
 			products: [],
@@ -49,8 +40,10 @@ export default class App extends Component {
 
 	// Cart
 	refreshCartCount() {
-		const self = this;
 		if (authGuard.isAuthenticated) {
+			const self = this;
+
+			// Get cart count
 			fetch('/api/cart', {
 				method: 'GET',
 				headers: {
@@ -81,18 +74,20 @@ export default class App extends Component {
 		}
 	}
 
-	async addProductToCart(id) {
+	addProductToCart(id) {
 		if (authGuard.isAuthenticated) {
-			const result = await fetch(`/api/cart/${id}`, {
+			const self = this;
+
+			fetch(`/api/cart/${id}`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
 					Authorization: authGuard.token
 				}
+			}).then(data => {
+				if (data.status === 204) this.incrementCartCount();
+				self.showAlert('Product added to cart!', 'success');
 			});
-			console.log(result);
-			if (result.status === 204) this.incrementCartCount();
-			this.showAlert('Product added to cart!', 'success');
 		}
 	}
 
@@ -105,7 +100,7 @@ export default class App extends Component {
 		});
 	}
 
-	setSearchQuery(searchQuery) {
+	handleSearchQuery(searchQuery) {
 		this.setState({ searchQuery });
 	}
 
@@ -137,7 +132,7 @@ export default class App extends Component {
 				<Header
 					cartCount={this.state.cartCount}
 					refreshCartCount={this.refreshCartCount.bind(this)}
-					setSearchQuery={this.setSearchQuery.bind(this)}
+					search={this.handleSearchQuery.bind(this)}
 					searchQuery={this.state.searchQuery}
 					alert={this.showAlert.bind(this)}
 				/>
